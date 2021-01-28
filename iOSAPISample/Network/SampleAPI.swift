@@ -15,6 +15,7 @@ enum SampleAPI: API {
     
     // マイページメイン画像更新
     case mypage_profiles_images(auth_token: String, image: UIImage)
+    case update_mypage_profiles_images(auth_token: String, image: UIImage)
     
     private var apiVersion: String {
         return "v1/"
@@ -23,8 +24,8 @@ enum SampleAPI: API {
 
     var buildURL: URL {
         //return URL(string: Mitsu.BaseURL + "/api/" + apiVersion + endpoint)!
-        print("http://localhost:3000/" + "api/" + apiVersion + endpoint)
         return URL(string: "http://localhost:3000/" + "api/" + apiVersion + endpoint)!
+        //return URL(string: "http://133.125.60.37/" + "api/" + apiVersion + endpoint)!
     }
 
     var endpoint: String {
@@ -32,6 +33,7 @@ enum SampleAPI: API {
             case .login( _, _):                      return "test/user/login"
             case .create(_, _, _):                        return "test/user/create"
             case .mypage_profiles_images(_, _): return "users/me/profile/images/create"
+            case .update_mypage_profiles_images(_, _): return "users/me/profile/images/update"
         }
     }
     
@@ -65,6 +67,15 @@ enum SampleAPI: API {
             ]
             return params
 
+        case .update_mypage_profiles_images(let auth_token, let image):
+            guard let imageData = image.pngData() else { return params }
+            let base64String = imageData.base64EncodedString()
+            params = [
+                "auth_token": auth_token,
+                    "image": "data:image/jpeg;base64," + base64String
+                    //"image":  base64String
+            ]
+            return params
         }
         
         return params

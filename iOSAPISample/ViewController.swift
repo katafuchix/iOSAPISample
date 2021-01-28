@@ -17,7 +17,9 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var button: UIButton!
     
-    var auth_token: String = ""
+    var auth_token: String = "c702aa22fccf7e8b6a9b72ad9d8be618a870b03054e2b633"
+    //var auth_token: String = "db81fa67623bf93f3f16a3cbb337501e758ec2dc4d88839c"
+    // http://133.125.60.37/
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,12 +58,12 @@ class ViewController: UIViewController {
     
     func bind() {
         self.button.rx.tap.asDriver().drive(onNext: { [unowned self] _ in
-            self.request()
-            /*
+            //self.request()
+            
             self.showSelectImage(self)
             print("self.auth_token")
             print(self.auth_token)
-            */
+            
         }).disposed(by: rx.disposeBag)
     }
 }
@@ -84,7 +86,10 @@ extension ViewController: UIImagePickerControllerDelegate, UINavigationControlle
             imageCropVC.delegate = self
             imagePicker.pushViewController(imageCropVC, animated: true)
  */
-            let request: Observable<SimpleResponse> = APIClientRx.post(api: SampleAPI.mypage_profiles_images(auth_token: self.auth_token, image: pickedImage))
+            //let request: Observable<SimpleResponse> = APIClientRx.post(api: SampleAPI.mypage_profiles_images(auth_token: self.auth_token, image: pickedImage))
+            
+            let request: Observable<SimpleResponse> = APIClientRx.post(api: SampleAPI.update_mypage_profiles_images(auth_token: self.auth_token, image: pickedImage))
+            
             request.asObservable().subscribeAPIwithProgress( //.subscribeAPIwithProgress(
                 progress: ProgressForAPI(isDismiss: true),
                 onNext: { [unowned self] (response) in
